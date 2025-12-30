@@ -1,0 +1,73 @@
+Time-series model (LSTM) to predict sepsis dynamically, using a small core set of vital signs, and output risk probabilities. 
+
+1. Core Features
+
+5 time-series features — usually for sepsis prediction these are:
+
+Heart Rate (HR)
+
+Systolic Blood Pressure (SBP)
+
+Respiratory Rate (RR)
+
+Temperature (Temp)
+
+Oxygen Saturation (SpO₂)
+
+These are collected hourly or per minute.
+
+
+2. Preprocessing
+
+Resample: Ensure all time series are uniform (e.g., 1-hour intervals).
+
+Missing values: Impute missing vitals with forward-fill or median values.
+
+Normalize: Scale each feature (MinMaxScaler or StandardScaler) so LSTM/GRU learns effectively.
+
+Sequence creation: Use a sliding window of, e.g., 10 hours to predict the next hour's risk.
+
+
+3. Postprocessing & Thresholding
+
+Default threshold for classifying sepsis: 0.5.
+
+But WE tune based on risk tolerance:
+
+risk = model.predict(new_data)  # returns probability
+if risk > 0.8:
+    print("Septic shock likely")
+elif risk > 0.5:
+    print("Sepsis likely")
+else:
+    print("Low risk")
+
+
+
+
+MODEL INFO
+The model accepts  a 3d array of input data as it was trained similarly. 
+This data shows progression of a single patient in 10 intervals with 5 features.
+This gives the model a [10,5] structure.
+
+
+# Example: last 10 hours of vitals for a patient
+# Replace these with real measurements
+patient_sequence = np.array([
+    [82, 118, 16, 37.1, 97],  # Hour 1
+    [85, 115, 17, 37.3, 96],
+    [88, 112, 18, 37.5, 95],
+    [90, 110, 19, 37.6, 94],
+    [92, 108, 20, 37.8, 93],
+    [95, 105, 21, 38.0, 92],
+    [97, 102, 22, 38.2, 91],
+    [100, 100, 23, 38.5, 90],
+    [102, 98, 24, 38.7, 89],
+    [105, 95, 25, 39.0, 88]
+])  # shape: (10,5)
+
+
+Each Set of vitals represents an hourly result of a single patient.
+
+
+Cdoe on how the model was trained is found in the notebook in this folder - "Model Training notebook.ipynb"
