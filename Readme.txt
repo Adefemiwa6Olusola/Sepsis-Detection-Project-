@@ -13,4 +13,5 @@ Then cmd can be opened in the folder and run the code
 	uvicorn app:app --reload
 
 This would start the localhost server 
-The model can be opened on this url : http://127.0.0.1:8000/docs#/
+
+The model can be opened on this url : https://colab.research.google.com/drive/1ily-_ef5S4U8Ns9YtfgaB8El0mABNiem?usp=sharing
